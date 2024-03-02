@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var dotenv = require('dotenv');
 dotenv.config(); // dotenv.config( { path: './config/config.env' })
+var path = require('path');
 var express = require('express');
 var mongodb = require('./models/connect');
 var bodyParser = require('body-parser');
@@ -13,6 +14,8 @@ var app = express();
 app.set('view engine', 'ejs');
 // Define the directory where your HTML files (views) are located
 app.set('views', __dirname + '/views');
+// Static Folder
+app.use(express.static(path.join(__dirname, 'public')));
 app
     .use(bodyParser.json())
     .use('/', require('./routes'))
@@ -50,8 +53,8 @@ mongodb.initDb(function (err, mongodb) {
             app.listen(port);
             console.log("Connected to DB from ".concat(process.env.NODE_ENV, " and listening on ").concat(port));
         }
-        catch (er) {
-            console.error(er);
+        catch (err) {
+            console.error(err);
             process.exit(1);
         }
     }

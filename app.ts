@@ -2,6 +2,7 @@ import { MongoClient, MongoDBCollectionNamespace, MongoDBNamespace } from "mongo
 
 var dotenv = require('dotenv');
 dotenv.config(); // dotenv.config( { path: './config/config.env' })
+const path = require('path');
 const express = require('express');
 const mongodb = require('./models/connect');
 const bodyParser = require('body-parser');
@@ -15,6 +16,9 @@ const app = express();
 app.set('view engine', 'ejs');
 // Define the directory where your HTML files (views) are located
 app.set('views', __dirname + '/views');
+
+// Static Folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 app
   .use(bodyParser.json())

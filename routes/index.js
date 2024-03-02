@@ -7,7 +7,7 @@ router.use('/albums', require('./albums'));
 //router.use('/artistsongs', require('./artistsongs'));
 // Login / Landing Page
 router.get('/', function (req, res) {
-    res.send('login');
+    res.render('login');
 });
 // main
 router.get('/main', function (req, res) {

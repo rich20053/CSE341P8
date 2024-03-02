@@ -9,7 +9,7 @@ router.use('/albums', require('./albums'));
 
 // Login / Landing Page
 router.get('/', function (req:any, res:any) {
-    res.send('login');
+    res.render('login');
 });
 // main
 router.get('/main', function (req:any, res:any) {
