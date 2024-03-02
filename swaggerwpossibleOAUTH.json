@@ -10,6 +10,34 @@
   "schemes": [
     "https"
   ],
+
+
+  "components": {
+    "securitySchemes": {
+      "oAuthSample": {   //# <---- arbitrary name
+        "type": "oauth2",
+        "description": "test description", //This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)
+        "flows": {
+          "implicit":  { //# <---- OAuth flow(authorizationCode, implicit, password or clientCredentials)
+            "authorizationUrl": "https://api.example.com/oauth2/authorize",
+            "scopes": {
+              "read_pets": "read your pets",
+              "write_pets": "modify pets in your account"
+            }
+          }
+        }
+      }  
+    }
+  },
+// # Step 2 - apply security globally...
+"security": {
+  "oAuthSample": [
+    "write_pets",
+    "read_pets"
+  ]
+},
+
+
   "paths": {
     "/api-docs": {
       "get": {

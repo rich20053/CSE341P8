@@ -1,15 +1,20 @@
 import { MongoClient, MongoDBCollectionNamespace, MongoDBNamespace } from "mongodb";
 
 var dotenv = require('dotenv');
-dotenv.config();
+dotenv.config(); // dotenv.config( { path: './config/config.env' })
 const express = require('express');
 const mongodb = require('./models/connect');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+//const GoogleStrategy = require('passport-google-oauth20').OAuth2Strategy;
 
 const port = process.env.PORT || 8080;
 const app = express();
+
+// Set EJS as the view engine
+app.set('view engine', 'ejs');
+// Define the directory where your HTML files (views) are located
+app.set('views', __dirname + '/views');
 
 app
   .use(bodyParser.json())
@@ -20,7 +25,7 @@ app
     next();
   })
 
-// Configure Google OAuth 2.0 Strategy
+/*/ Configure Google OAuth 2.0 Strategy
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -32,7 +37,7 @@ passport.use(new GoogleStrategy({
     // You can save user information to your database here
     return done(null, profile);
   }
-));
+));*/
 
 // Route to initiate authentication with Google
 app.get('/auth/google',
@@ -52,8 +57,14 @@ mongodb.initDb((err: string, mongodb: MongoClient) => {
   if (err) {
     console.log(err);
   } else {
+    try {
     app.listen(port);
-    console.log(`Connected to DB and listening on ${port}`);
+    console.log(`Connected to DB from ${process.env.NODE_ENV} and listening on ${port}`);
+    }
+    catch (err) {
+      console.error(err);
+      process.exit(1);
+    }
   }
 });
 
