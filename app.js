@@ -7,13 +7,25 @@ var express = require('express');
 var mongodb = require('./models/connect');
 var bodyParser = require('body-parser');
 var passport = require('passport');
+var session = require("express-session");
 //const GoogleStrategy = require('passport-google-oauth20').OAuth2Strategy;
 var port = process.env.PORT || 8080;
+//Passport config
+require("./util/passport")(passport);
 var app = express();
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
 // Define the directory where your HTML files (views) are located
 app.set('views', __dirname + '/views');
+// Sessions
+app.use(session({
+    secret: "Pumpking Pudding",
+    resaver: false,
+    saveUninitialized: false
+}));
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
 // Static Folder
 app.use(express.static(path.join(__dirname, 'public')));
 app
@@ -24,19 +36,6 @@ app
     res.setHeader('Access-Control-Allow-Origin', '*');
     next();
 });
-/*/ Configure Google OAuth 2.0 Strategy
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'http://localhost:8080/auth/google/callback'
-  },
-  (accessToken: any, refreshToken: any, profile: any, done: any) => {
-    // Handle user authentication
-    // This function is called after successful authentication
-    // You can save user information to your database here
-    return done(null, profile);
-  }
-));*/
 // Route to initiate authentication with Google
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 // Callback route after Google authentication
