@@ -8,12 +8,16 @@ router.use('/albums', require('./albums'));
 //router.use('/artistsongs', require('./artistsongs'));
 
 // Login / Landing Page
-router.get('/', function (req:any, res:any) {
-    res.render('login');
-});
+//router.get('/', function (req:any, res:any) {
+//    res.render('login');
+//});
 // main
-router.get('/main', function (req:any, res:any) {
-    res.render('main');
-});
+//router.get('/main', function (req:any, res:any) {
+//    res.render('main');
+//});
+
+router.use('/auth', require('./oauth2'));
+//router.use('/auth/google/callback', require('./oauth2'));
+router.use('/protected', require('./oauth2'));
 
 module.exports = router;
