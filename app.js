@@ -32,9 +32,9 @@ app
   };
 
   const port = process.env.PORT || 8080;
-  if (!config.baseURL && !process.env.BASE_URL && process.env.PORT && process.env.NODE_ENV !== 'production') {
-    config.baseURL = `http://localhost:${port}`;
-  }
+  //if (!config.baseURL && !process.env.BASE_URL && process.env.PORT && process.env.NODE_ENV !== 'production') {
+  //  config.baseURL = `http://localhost:${port}`;
+  //}
   
   app.use(auth(config));
 
@@ -70,7 +70,7 @@ mongodb.initDb((err, mongodb) => {
   } else {
     http.createServer(app)
     .listen(port, () => {
-      console.log(`Listening on ${config.baseURL}`);
+      console.log(`Listening on ${process.env.NODE_ENV}`);
     });
   }
 });
