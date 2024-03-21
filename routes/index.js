@@ -24,10 +24,12 @@ router.use(auth({
 }));
 
 router.get('/', function (req, res, next) {
+  res.redirect('/api-docs');
+  /* LAST CHANGE
   res.render('index', {
     title: 'Auth0 Webapp sample Nodejs',
     isAuthenticated: req.oidc.isAuthenticated()
-  });
+  });*/
 });
 
 /*
@@ -39,10 +41,10 @@ router.get('/profile', requiresAuth(), function (req, res, next) {
 });
 */
 
-router.use('/', require('./swagger'));
+router.use('/', requiresAuth(), require('./swagger'));
 router.use('/songs', requiresAuth(), require('./songs'));
-router.use('/artists', require('./artists'));
-router.use('/albums', require('./albums'));
+router.use('/artists', requiresAuth(), require('./artists'));
+router.use('/albums', requiresAuth(), require('./albums'));
 
 // Login route
 router.get('/login', passport.authenticate('auth0', { scope: 'openid email profile' }));
@@ -55,8 +57,8 @@ router.get('/callback', passport.authenticate('auth0', { failureRedirect: '/' })
 // Logout route
 router.get('/logout', (req, res) => {
   req.logout({
-    returnTo: 'https://your-website.com',
-    clientID: 'your-client-id'
+    returnTo: AUTH0_BASE_URL+DASHBOARD,
+    clientID: AUTH0_CLIENT_ID
   }, (err) => {
     if (err) {
       console.error('Logout error:', err);
