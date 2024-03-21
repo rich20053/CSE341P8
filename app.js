@@ -1,19 +1,33 @@
 const dotenv = require('dotenv');
 const express = require('express');
+const session = require('express-session');
 const mongodb = require('./models/connect');
 const bodyParser = require('body-parser');
 const http = require('http');
 const logger = require('morgan');
 const path = require('path');
 const router = require('./routes/index');
+const passport = require('passport');
 const { auth } = require('express-openid-connect');
+require('./config/passport'); // Import the passport configuration
 
-//dotenv.load();
+dotenv.config();
 
 const app = express();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app
   .use(logger('dev'))
@@ -28,13 +42,14 @@ app
 
   const config = {
     authRequired: false,
-    auth0Logout: true
+    auth0Logout: true,
+    secret: process.env.AUTH0_CLIENT_SECRET,
+    baseURL: 'http://localhost:8080',
+    clientID: process.env.AUTH0_CLIENT_ID,
+    issuerBaseURL: 'https://dev-eoeqs0i46b7m7dfa.us.auth0.com'
   };
-
+  
   const port = process.env.PORT || 8080;
-  //if (!config.baseURL && !process.env.BASE_URL && process.env.PORT && process.env.NODE_ENV !== 'production') {
-  //  config.baseURL = `http://localhost:${port}`;
-  //}
   
   app.use(auth(config));
 
@@ -61,8 +76,6 @@ app.use(function (err, req, res, next) {
     error: process.env.NODE_ENV !== 'production' ? err : {}
   });
 });
-
-
   
 mongodb.initDb((err, mongodb) => {
   if (err) {
