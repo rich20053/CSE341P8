@@ -13,7 +13,6 @@ router.use(session({
   resave: true,
   saveUninitialized: false
 }));
-*/
 
 router.use(auth({
   authRequired: false,
@@ -23,11 +22,10 @@ router.use(auth({
   clientID: process.env.AUTH0_CLIENT_ID,
   issuerBaseURL: 'https://dev-eoeqs0i46b7m7dfa.us.auth0.com' // Update with your Auth0 domain
 }));
-
+*/
 router.get('/', function (req, res, next) {
   res.redirect('/api-docs');
 });
-
 
 router.use('/api-docs', requiresAuth(), require('./swagger'));
 router.use('/songs', requiresAuth(), require('./songs'));
