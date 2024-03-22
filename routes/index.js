@@ -33,7 +33,6 @@ router.use('/artists', requiresAuth(), require('./artists'));
 router.use('/albums', requiresAuth(), require('./albums'));
 
 // Login route
-router.get('/', passport.authenticate('auth0', { scope: 'openid email profile' }));
 router.get('/login', passport.authenticate('auth0', { scope: 'openid email profile' }));
 
 // Callback route
