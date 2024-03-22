@@ -7,7 +7,6 @@ const { auth, requiresAuth } = require('express-openid-connect');
 
 dotenv.config();
 
-/*
 router.use(session({
   secret: process.env.SESSION_SECRET,
   resave: true,
@@ -22,7 +21,7 @@ router.use(auth({
   clientID: process.env.AUTH0_CLIENT_ID,
   issuerBaseURL: 'https://dev-eoeqs0i46b7m7dfa.us.auth0.com' // Update with your Auth0 domain
 }));
-*/
+
 router.get('/', function (req, res, next) {
   res.redirect('/api-docs');
 });
