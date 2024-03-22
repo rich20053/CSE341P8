@@ -11,7 +11,6 @@ router.use(session({
   secret: process.env.SESSION_SECRET,
   resave: true,
   saveUninitialized: false
-
 }));
 
 router.use(auth({
@@ -25,21 +24,8 @@ router.use(auth({
 
 router.get('/', function (req, res, next) {
   res.redirect('/api-docs');
-  /* LAST CHANGE
-  res.render('index', {
-    title: 'Auth0 Webapp sample Nodejs',
-    isAuthenticated: req.oidc.isAuthenticated()
-  });*/
 });
 
-/*
-router.get('/profile', requiresAuth(), function (req, res, next) {
-  res.render('profile', {
-    userProfile: JSON.stringify(req.oidc.user, null, 2),
-    title: 'Profile page'
-  });
-});
-*/
 
 router.use('/', requiresAuth(), require('./swagger'));
 router.use('/songs', requiresAuth(), require('./songs'));

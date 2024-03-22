@@ -22,7 +22,7 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: true,
-    saveUninitialized: true,
+    saveUninitialized: true
   })
 );
 
@@ -49,10 +49,10 @@ app
     issuerBaseURL: 'https://dev-eoeqs0i46b7m7dfa.us.auth0.com'
   };
   
-  const port = process.env.PORT || 8080;
-  
   app.use(auth(config));
 
+  const port = process.env.PORT || 8080;
+  
   // Middleware to make the `user` object available for all views
   app.use(function (req, res, next) {
     res.locals.user = req.oidc.user;
@@ -87,5 +87,3 @@ mongodb.initDb((err, mongodb) => {
     });
   }
 });
-
-
