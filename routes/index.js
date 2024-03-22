@@ -27,12 +27,13 @@ router.get('/', function (req, res, next) {
 });
 
 
-router.use('/', requiresAuth(), require('./swagger'));
+router.use('/api-docs', requiresAuth(), require('./swagger'));
 router.use('/songs', requiresAuth(), require('./songs'));
 router.use('/artists', requiresAuth(), require('./artists'));
 router.use('/albums', requiresAuth(), require('./albums'));
 
 // Login route
+router.get('/', passport.authenticate('auth0', { scope: 'openid email profile' }));
 router.get('/login', passport.authenticate('auth0', { scope: 'openid email profile' }));
 
 // Callback route
