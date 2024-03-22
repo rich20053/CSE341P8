@@ -6,13 +6,13 @@ const session = require('express-session');
 const { auth, requiresAuth } = require('express-openid-connect');
 
 dotenv.config();
-
+/*
 router.use(session({
   secret: process.env.SESSION_SECRET,
   resave: true,
   saveUninitialized: false
 }));
-
+*/
 router.use(auth({
   authRequired: false,
   auth0Logout: true,

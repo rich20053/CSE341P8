@@ -17,7 +17,7 @@ const app = express();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-/*
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -25,7 +25,7 @@ app.use(
     saveUninitialized: true
   })
 );
-*/
+
 app.use(passport.initialize());
 app.use(passport.session());
 
