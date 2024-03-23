@@ -6,13 +6,33 @@ const session = require('express-session');
 const { auth, requiresAuth } = require('express-openid-connect');
 
 dotenv.config();
+
+router.use((req, res, next) => {
+  if (req.session && req.session.userId) {
+    // Session is authenticated, proceed with the request
+    next();
+  } else {
+  
+    router.use(session({
+      secret: process.env.SESSION_SECRET,
+      resave: true,
+      saveUninitialized: false
+    }));
+
+    const config = {
+      authRequired: false,
+      auth0Logout: true,
+      secret: process.env.AUTH0_CLIENT_SECRET,
+      baseURL: process.env.AUTH0_BASE_URL,
+      clientID: process.env.AUTH0_CLIENT_ID,
+      issuerBaseURL: 'https://dev-eoeqs0i46b7m7dfa.us.auth0.com'
+    };
+  
+    router.use(auth(config));
+  }
+});
+
 /*
-router.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: true,
-  saveUninitialized: false
-}));
-*/
 router.use(auth({
   authRequired: false,
   auth0Logout: true,
@@ -21,7 +41,7 @@ router.use(auth({
   clientID: process.env.AUTH0_CLIENT_ID,
   issuerBaseURL: 'https://dev-eoeqs0i46b7m7dfa.us.auth0.com' // Update with your Auth0 domain
 }));
-
+*/
 router.get('/', function (req, res, next) {
   res.redirect('/api-docs');
 });

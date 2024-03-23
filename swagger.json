@@ -5,10 +5,10 @@
     "description": "API for My Music Collection",
     "version": "1.0.0"
   },
-  "host": "week8service.onrender.com",
+  "host": "localhost:8080",
   "basePath": "/", 
   "schemes": [
-    "https"
+    "http"
   ],
   "paths": {
     "/api-docs": {
